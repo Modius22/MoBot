@@ -25,7 +25,7 @@ async def d6(ctx):
 
   Parameters
   ----------
-  ctx
+  ctx : context
   """
   await ctx.send(random.randrange(1, 6))
 
@@ -36,7 +36,7 @@ async def d10(ctx):
 
   Parameters
   ----------
-  ctx
+  ctx : context
   """
   await ctx.send(random.randrange(1, 10))
 
@@ -47,7 +47,8 @@ async def d20(ctx):
 
   Parameters
   ----------
-  ctx
+    ctx : context
+
   """
   await ctx.send(random.randrange(1, 20))
 
@@ -58,7 +59,8 @@ async def d100(ctx):
 
   Parameters
   ----------
-  ctx
+  ctx : context
+
   """
   await ctx.send(random.randrange(1, 100))
 
@@ -69,7 +71,7 @@ async def strange(ctx, number):
 
     Parameters
     ----------
-    ctx
+    ctx : context
 
     number : integer
       difficult of the roll
@@ -96,7 +98,8 @@ async def chuck(ctx):
 
     Parameters
     ----------
-    ctx
+    ctx : context
+
   """
   possible_responses = [
     'Wenn Chuck Norris von einem Zombie gebissen wird, dann verwandelt sich der Zombie in Chuck Norris.',
