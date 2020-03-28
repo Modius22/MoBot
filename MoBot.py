@@ -2,9 +2,11 @@ import asyncio
 import logging
 import random
 
+import discord
 from discord import Game
 from discord.ext.commands import Bot
-
+from discord.utils import get
+from discord.ext import commands
 # own
 import config as cfg
 
@@ -18,6 +20,52 @@ BOT_PREFIX = ("?", "!")
 
 client = Bot(command_prefix=BOT_PREFIX)
 
+@client.command(pass_context=True, name='join', brief='join bot to the voice channel')
+async def join(ctx):
+  """ join voice channel
+
+  Parameters
+  ----------
+  ctx : context
+  """
+  global voice
+  channel = ctx.message.author.voice.channel
+  voice = get(client.voice_clients, guild=ctx.guild)
+
+  if voice and voice.is_connected():
+    await voice.move_to(channel)
+  else:
+    voice = await channel.connect()
+    print(f"The bot has connected to {channel}\n")
+
+  await ctx.send(f"joined {channel}")
+
+@client.command(pass_context=True,name='leave', brief='disconnect bot from the voice channel')
+async def leave(ctx):
+  """ leave voice channel
+
+  Parameters
+  ----------
+  ctx : context
+  """
+  channel = ctx.message.author.voice.channel
+  voice = get(client.voice_clients, guild=ctx.guild)
+
+  if voice and voice.is_connected():
+    await voice.disconnect()
+    print(f"the bot has left {channel}")
+    await ctx.send(f"the bot has left {channel}")
+  else:
+    print("Bot was told to leave voice channel, but was not in one")
+    await ctx.send("Bot was told to leave voice channel, but was not in one")
+
+
+@client.command(pass_content=True, name='play', brief='play sample audio file')
+async def play(ctx):
+  voice = get(client.voice_clients, guild=ctx.guild)
+  voice.play(discord.FFmpegPCMAudio("sound/test.mp3"))
+  voice.source = discord.PCMVolumeTransformer(voice.source)
+  voice.source.volume = 0.07
 
 @client.command(name='d6', brief="rolls a 6-sided dice")
 async def d6(ctx):
