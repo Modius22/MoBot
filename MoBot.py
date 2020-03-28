@@ -23,20 +23,20 @@ BOT_PREFIX = ("?", "!")
 
 client = Bot(command_prefix=BOT_PREFIX)
 
-@client.command(name='w6',brief="rolls a 6-sided dice")
-async def w6(ctx):
+@client.command(name='d6',brief="rolls a 6-sided dice")
+async def d6(ctx):
         await ctx.send(random.randrange(1, 6))
 
-@client.command(name='w10',brief="rolls a 10-sided dice")
-async def w10(ctx):
+@client.command(name='d10',brief="rolls a 10-sided dice")
+async def d10(ctx):
         await ctx.send(random.randrange(1, 10))
 
-@client.command(name='w20',brief="rolls a 20-sided dice")
-async def w20(ctx):
+@client.command(name='d20',brief="rolls a 20-sided dice")
+async def d20(ctx):
         await ctx.send(random.randrange(1, 20))
 
-@client.command(name='w100',brief="rolls a 100-sided dice")
-async def w100(ctx):
+@client.command(name='d100',brief="rolls a 100-sided dice")
+async def d100(ctx):
         await ctx.send(random.randrange(1, 100))
 
 
@@ -56,43 +56,6 @@ async def strange(ctx,number):
             logger.info('strange' + user.name + ' (' + str(dice))
             await ctx.send('Ohoh ' + user.name + ' (' + str(dice) + ')')
 
-
-#@client.command(aliases=["playerstats", "player", "userinfo", "userstats", "user"])
-#async def playerinfo(ctx):
-#    user = ctx.author
-#    msg = [
-#        ("Name", user.name),
-#        ("Discrim", user.discriminator),
-#        #("ID", user.id),
-#        ("Display Name", user.display_name),
-#        ("Joined at", user.joined_at),
-#        ("Created at", user.created_at),
-#        ("Color", user.color),
-#        ("Status", user.status),
-#        ("Game", user.activities),
-#        ("Avatar URL", user.avatar_url),
-#        ("history", user.history),
-#        ("mention", user.mention)
-#    ]
-#    print(msg)
-#    await ctx.send(msg)
-#
-#
-#@client.command(name='8ball',
-#                description="Answers a yes/no question.",
-#                brief="Answers from the beyond.",
-#                aliases=['eight_ball', 'eightball', '8-ball'],
-#                pass_context=True)
-#
-#async def eight_ball(ctx,context):
-#    possible_responses = [
-#        'That is a resounding no',
-#        'It is not looking likely',
-#        'Too hard to tell',
-#        'It is quite possible',
-#        'Definitely',
-#    ]
-#    await ctx.send(random.choice(possible_responses) + ", " + context.message.author.mention)
 
 @client.command(name='chuck', brief="chuck norris jokes.", pass_context=True)
 async def chuck(ctx):
@@ -131,27 +94,10 @@ async def chuck(ctx):
     ]
     await ctx.send(random.choice(possible_responses))
 
-
-#@client.command(name='square',brief="!square <number>")
-#async def square(ctx,number):
-#    squared_value = int(number) * int(number)
-#    await ctx.send(str(number) + " squared is " + str(squared_value))
-
-
 @client.event
 async def on_ready():
     await client.change_presence(activity=Game(name="with humans"))
     print("Logged in as " + client.user.name)
-
-
-#@client.command()
-#async def bitcoin(ctx):
-#    url = 'https://api.coindesk.com/v1/bpi/currentprice/BTC.json'
-#    async with aiohttp.ClientSession() as session:  # Async HTTP request
-#        raw_response = await session.get(url)
-#        response = await raw_response.text()
-#        response = json.loads(response)
-#        await ctx.send("Bitcoin price is: $" + response['bpi']['USD']['rate'])
 
 
 async def list_servers():
