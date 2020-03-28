@@ -130,13 +130,14 @@ async def strange(ctx, number):
   print(dice)
   print("strange: " + str(int(number) * 3))
   if dice >= int(number) * 3:
+    write_history('good job ' + user.name + '. dice = ' + str(dice) + ', strange = ' + str(number))
     await ctx.send('good job ' + user.name + ' (' + str(dice) + ')')
   else:
     if dice == 1:
-      logger.info('strange' + user.name + ' (' + str(dice))
+      write_history('Ohoh :hot_face: ' + user.name + '. dice = ' + str(dice) + ', strange = ' + str(number))
       await ctx.send('Ohoh :hot_face: ' + user.name + ' (' + str(dice) + '). Setzt lieber ein XP du Noob')
     else:
-      logger.info('strange' + user.name + ' (' + str(dice))
+      write_history('Ohoh ' + user.name + '. dice = ' + str(dice) + ', strange = ' + str(number))
       await ctx.send('Ohoh ' + user.name + ' (' + str(dice) + ')')
 
 
@@ -198,6 +199,11 @@ async def list_servers():
     for server in client.servers:
       print(server.name)
     await asyncio.sleep(600)
+
+
+def write_history(text):
+  with open('history.txt', 'a') as the_file:
+    the_file.write(text +'\n')
 
 
 client.loop.create_task(list_servers())
