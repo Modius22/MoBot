@@ -141,6 +141,7 @@ async def strange(ctx, number):
       await ctx.send('Ohoh ' + user.name + ' (' + str(dice) + ')')
 
 
+
 @client.command(name='chuck', brief="chuck norris jokes.", pass_context=True)
 async def chuck(ctx):
   """ Print a chuck norris joke
@@ -181,6 +182,115 @@ async def chuck(ctx):
     'Chuck Norris lacht auch zuerst am Besten.',
     'Chuck Norris fährt in England auf der rechten Seite.',
     'Chuck Norris hat keine Angst vor der Dunkelheit, die Dunkelheit hat Angst vor Chuck Norris',
+
+  ]
+  await ctx.send(random.choice(possible_responses))
+
+
+
+@client.command(name='cypher', brief="get a cypher.", pass_context=True)
+async def cypher(ctx):
+  """ get a cypher
+
+    Parameters
+    ----------
+    ctx : context
+
+  """
+  possible_responses = ['Abeyance trap',
+    'Age taker',
+    'Analeptic',
+    'Antidote',
+    'Armor reinforcer',
+    'Attractor',
+    'Blackout',
+    'Condition remover',
+    'Contextualizer',
+    'Contingent activator',
+    'Curative',
+    'Curse bringer',
+    'Darksight',
+    'Death module',
+    'Disguise module',
+    'Draining capacitor',
+    'Effect resistance',
+    'Effort enhancer',
+    'Effort enhancer (combat)',
+    'Enduring shield',
+    'Equipment cache',
+    'Flashburst',
+    'Focus hook',
+    'Force armor projector',
+    'Force screen projector',
+    'Gas ammunition',
+    'Glue',
+    'Grenade',
+    'Grenade (creature)',
+    'Grenade (gravity inversion)',
+    'Grenade (recursion)',
+    'Grenade (recursion collapsing)',
+    'Information lenses',
+    'Insight',
+    'Intellect booster',
+    'Intelligence enhancement',
+    'Knowledge enhancement',
+    'Lift',
+    'Magnetic master',
+    'Manipulation beam',
+    'Mapper',
+    'Matter translation ray',
+    '48 Meditation aid',
+    'Melt all',
+    'Memory switch',
+    'Mental scrambler',
+    'Mind meld',
+    'Mind-restricting wall',
+    'Mind stabilizer',
+    'Monoblade',
+    'Monohorn',
+    'Multiphasic module',
+    'Null field',
+    'Nullification ray',
+    'Nutrition and hydration',
+    'Phase changer',
+    'Phase wall',
+    'Radiation spike',
+    'Ray emitter',
+    'Ray emitter (command)',
+    'Ray emitter (friend slaying)',
+    'Ray emitter (fear)',
+    'Ray emitter (mind-disrupting)',
+    'Recursion anchor',
+    'Recursion code',
+    'Reflex enhancer',
+    'Remembering',
+    'Repeating module',
+    'Sheltering recursion',
+    'Slave maker',
+    'Sleep inducer',
+    'Sniper module',
+    'Speed boost',
+    'Spying grenade',
+    'Stasis keeper',
+    'Stim',
+    'Strange ammunition',
+    'Strange apotheosis',
+    'Strength boost',
+    'Strength enhancer',
+    'Surveillance set',
+    'Telepathic bond',
+    'Temporary shield',
+    'Tissue regeneration',
+    'Tracker',
+    'Translation remedy',
+    'Transvolution',
+    'Trick embedder',
+    'Uninterruptible power source',
+    'Vanisher',
+    'Visual displacement device',
+    'Vocal translator',
+    'Water adapter',
+    'Wings',
 
   ]
   await ctx.send(random.choice(possible_responses))
