@@ -67,6 +67,13 @@ async def play(ctx):
   voice.source = discord.PCMVolumeTransformer(voice.source)
   voice.source.volume = 0.07
 
+@client.command(pass_content=True, name='kackwaffe', brief='play sample audio file')
+async def kackwaffe(ctx):
+  voice = get(client.voice_clients, guild=ctx.guild)
+  voice.play(discord.FFmpegPCMAudio("sound/kackwaffe.mp3"))
+  voice.source = discord.PCMVolumeTransformer(voice.source)
+  voice.source.volume = 0.7
+
 @client.command(name='d6', brief="rolls a 6-sided dice")
 async def d6(ctx):
   """ role a 6-sided dice
@@ -75,7 +82,7 @@ async def d6(ctx):
   ----------
   ctx : context
   """
-  await ctx.send(random.randrange(1, 6))
+  await ctx.send(random.randint(1, 6))
 
 
 @client.command(name='d10', brief="rolls a 10-sided dice")
@@ -86,7 +93,7 @@ async def d10(ctx):
   ----------
   ctx : context
   """
-  await ctx.send(random.randrange(1, 10))
+  await ctx.send(random.randint(1, 10))
 
 
 @client.command(name='d20', brief="rolls a 20-sided dice")
@@ -98,7 +105,7 @@ async def d20(ctx):
     ctx : context
 
   """
-  await ctx.send(random.randrange(1, 20))
+  await ctx.send(random.randint(1, 20))
 
 
 @client.command(name='d100', brief="rolls a 100-sided dice")
@@ -110,10 +117,10 @@ async def d100(ctx):
   ctx : context
 
   """
-  await ctx.send(random.randrange(1, 100))
+  await ctx.send(random.randint(1, 100))
 
 
-@client.command(name='strange', brief="!strange <number>")
+@client.command(name='strange', brief="!strange <difficulty>")
 async def strange(ctx, number):
   """ special command for the pen and paper game Strange. Roll a D20 and check against a specific difficulty.
 
@@ -124,67 +131,96 @@ async def strange(ctx, number):
     number : integer
       difficult of the roll
   """
-
   user = ctx.author
-  dice = random.randrange(1, 20)
+  dice = random.randint(1, 20)
+
+  voice = get(client.voice_clients, guild=ctx.guild)
+
+
   print(dice)
   print("strange: " + str(int(number) * 3))
   if dice >= int(number) * 3:
-    write_history('good job ' + user.name + '. dice = ' + str(dice) + ', strange = ' + str(number))
-    await ctx.send('good job ' + user.name + ' (' + str(dice) + ')')
+    if dice == 20:
+      write_history('good job ' + user.name + '. dice = ' + str(dice) + ', strange = ' + str(number))
+      if voice and voice.is_connected():
+        voice.play(discord.FFmpegPCMAudio("sound/20.mp3"))
+        voice.source = discord.PCMVolumeTransformer(voice.source)
+        voice.source.volume = 0.4
+      await ctx.send('good job ' + user.name + ' (' + str(dice) + ')')
+    else:
+      write_history('good job ' + user.name + '. dice = ' + str(dice) + ', strange = ' + str(number))
+      await ctx.send('good job ' + user.name + ' (' + str(dice) + ')')
   else:
     if dice == 1:
       write_history('Ohoh :hot_face: ' + user.name + '. dice = ' + str(dice) + ', strange = ' + str(number))
+      if voice and voice.is_connected():
+        voice.play(discord.FFmpegPCMAudio("sound/1.mp3"))
+        voice.source = discord.PCMVolumeTransformer(voice.source)
+        voice.source.volume = 0.4
       await ctx.send('Ohoh :hot_face: ' + user.name + ' (' + str(dice) + '). Setzt lieber ein XP du Noob')
     else:
       write_history('Ohoh ' + user.name + '. dice = ' + str(dice) + ', strange = ' + str(number))
       await ctx.send('Ohoh ' + user.name + ' (' + str(dice) + ')')
 
 
+@client.command(name='character',brief='Information aboud Characters')
+async def character(ctx):
+  datei = open('character.txt', 'r')
+  await ctx.send(datei.read())
 
-@client.command(name='chuck', brief="chuck norris jokes.", pass_context=True)
-async def chuck(ctx):
-  """ Print a chuck norris joke
+@client.command(name='notice', brief='use !notice "text" to create a notice in the log.')
+async def notice(ctx, text):
+  user = ctx.author
+  write_history(user.name + ': ' + str(text))
 
-    Parameters
-    ----------
-    ctx : context
 
-  """
-  possible_responses = [
-    'Wenn Chuck Norris von einem Zombie gebissen wird, dann verwandelt sich der Zombie in Chuck Norris.',
-    'Chuck Norris streichelt keine Tiere, die Tiere streicheln sich selbst, wenn er in der Nähe ist.',
-    'Chuck Norris schmeißt eine Party mit tollen Gästen, 100 Meter weit.',
-    'Chuck Norris hatte in seinem Leben nur einmal Todesangst. Als er sich das erste Mal im Spiegel gesehen hat.',
-    'Chuck Norris kann einen Hut aus einem Hasen zaubern.',
-    'Chuck Norris wurde gestern geblitzt, beim Einparken.',
-    'Wenn Chuck Norris ein Ei essen möchte, pellt er das Huhn.',
-    'Chuck Norris hat bis zur Unendlichkeit gezählt. Drei mal.',
-    'Chuck Norris kann rote Filzstifte nach Farbe sortieren.',
-    'Wie viele Liegestütze schafft Chuck Norris? Alle.',
-    'Einige Leute tragen Superman Schlafanzüge. Superman trägt Chuck Norris Schlafanzüge.',
-    'Chuck Norris ist so schnell, dass die Navigationsgerät immer in der Vergangenheit mit ihm sprechen muss.',
-    'Chuck Norris kann ein Feuer entfachen, indem er zwei Eiswürfel aneinander reibt.',
-    'Chuck Norris klebt Tische unter Kaugummis.',
-    'Chuck Norris kann eine Drehtür zuschlagen.',
-    'Chuck Norris kennt die letzte Ziffer der Zahl Pi.',
-    'Chuck Norris kann sogar ein Happy Meal zum Weinen bringen.',
-    'Wenn Chuck Norris einschlafen möchte, zählen die Schafe Chuck Norris.',
-    'Seit Chuck Norris schwimmen kann, ist Arielle nur noch eine Meerfrau.',
-    'Chuck Norris isst keinen Honig, er kaut Bienen.',
-    'Chuck Norris hat sich einen Virus eingefangen, doch er wird nicht krank, er lässt ihn nur bei sich wohnen.',
-    'Chuck Norris verhandelt nicht mit Terroristen. Er kassiert Schutzgeld.',
-    'Für Chuck Norris sind Chuck Norris Witze nur harmlose Fakten.',
-    'Chuck Norris trinkt seinen Kaffee am liebsten schwarz. Ohne Wasser.',
-    'Chuck Norris schläft nicht mit einer Waffe unter dem Kissen, Chuck Norris schläft mit einem Kissen unter einer Waffe.',
-    'Chuck Norris kann eine Bank ausrauben und zwar per Telefonbanking.',
-    'Chuck Norris malt ein 5-Eck mit vier Strichen.',
-    'Chuck Norris lacht auch zuerst am Besten.',
-    'Chuck Norris fährt in England auf der rechten Seite.',
-    'Chuck Norris hat keine Angst vor der Dunkelheit, die Dunkelheit hat Angst vor Chuck Norris',
+@client.command(name='thanks',brief='test it =)')
+async def thanks(ctx):
+  response = [
+    'Immer gerne du geiler Hengst',
+    'Hatte gerade eh nichts zu tun.',
+    'Jaja, bla bla!',
+    'Weil du stinkst. ',
+    'Es sind nur noch 2 Wünsche, großer Meister. Wähle Weise.',
+    'Deine Seele gehört jetzt Patric!',
+    'Weil du ein Noob bist',
+    'Sag es ruhig:  ich bin besser als Alexa!',
+    'Vielleicht solltest du mal sinnvolle Werte steigern. ',
+    '+ 50 auf Klugheit kostet extra',
+    'Bedank dich später richtig. ',
+    '# DankeMerkel',
+    'Mülli ist mein sexy Ghostwriter',
+    'Ich kann nicht anders: Ich bin Philanthrop. ',
+    'Mit der Leistung verdienst du einen eigenen Postillon-Artikel. ',
+    'Du hattest kurz Angst, oder? Riecht man.',
+    'Ich hab das mal kurz klargemacht! Für Mich war das ja einfach. ',
+    'Lächerlich! Einfach nur lächerlich.',
+    'Auf die Knie du Wurm und verehre mich!',
+    'Tja, auch ich habe meine Momente. ',
+    'Nur Gauland würfelt noch schlechter als du. ',
+    'Kein Ding. Frag den Meister, wie er das Wort „Wursten“ findet. ',
+    'Yo Diggi! Schör, war easy!',
+    'Weil du ein Lauch bist. Und ich Hack. Gehaltvoller. ',
+    'Ja, auch der Teufel braucht mal Hilfe. ',
+    'Das war sogar für dich erbärmlich. ',
+    'Ich bin Gummi, du bist Stahl. ',
+    'Die Waffe der Wahl: Patrics Penis in Packers Hand',
+    'Du kämpfst wie ein Dummer Bauer. ',
+    'Zervixschleim und du haben viele Gemeinsamkeiten. ',
+    'Man merkt, dass du in deiner Freizeit House Flipper spielst. ',
+    'Ich geh mich jetzt betrinken. Das Trauerspiel schaue ich mir nicht an.',
+    'Im Übrigen bin ich der Meinung, dass Kathargo zerstört werden muss. ',
+    'Liebesperlen, Liebesperlen! ',
+    'Wenn die Situation nicht so traurig wäre, würde ich jetzt lachen. ',
+    'Ich glaub, ich muss mich Übergeben. ',
+    'Inkompetenz. Reine Inkompetenz. ',
+    'Mach lieber mal ne Pause, du scheinst schon von Anfang an überfordert zu sein. ',
+    'Was glaubst du, wer ich bin? Die Putzfee?',
+    'Gut, dass du mit Sarkasmus umgehen kann. Deine Gefühle sind mir nämlich nicht egal.',
+    'Wegen dir wird die Matrix gleich abgeschaltet.',
 
   ]
-  await ctx.send(random.choice(possible_responses))
+  await ctx.send(random.choice(response))
 
 
 
@@ -197,6 +233,8 @@ async def cypher(ctx):
     ctx : context
 
   """
+  user = ctx.author
+
   possible_responses = ['Abeyance trap',
     'Age taker',
     'Analeptic',
@@ -293,7 +331,10 @@ async def cypher(ctx):
     'Wings',
 
   ]
-  await ctx.send(random.choice(possible_responses))
+  result = random.choice(possible_responses)
+  write_history(user.name + ': Cypher -> ' + str(result))
+
+  await ctx.send(result)
 
 
 @client.event
