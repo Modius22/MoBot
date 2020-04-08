@@ -7,6 +7,8 @@ from discord import Game
 from discord.ext.commands import Bot
 from discord.utils import get
 from discord.ext import commands
+from prettytable import PrettyTable
+
 # own
 import config as cfg
 
@@ -167,6 +169,16 @@ async def strange(ctx, number):
 async def character(ctx):
   datei = open('character.txt', 'r')
   await ctx.send(datei.read())
+
+@client.command(name='creatures', brief='list of creatures')
+async def creatures(ctx):
+  t = PrettyTable(['Name', 'Klasse', 'Aussehen', 'Vorkommen', 'Verhalten', 'Stufe & Besonderheiten (nur spieler Info)'])
+  t.add_row(['?', 'Seltsame', 'Flugfähige "Fleisch-Vorhänge"', 'R639', 'Aggressiv',
+             'Stufe 3. angriff in Gruppen. Wickeln Gegner ein. Lebewesen zerfallen zu Staub.'])
+
+  await ctx.send(t)
+
+
 
 @client.command(name='notice', brief='use !notice "text" to create a notice in the log.')
 async def notice(ctx, text):
