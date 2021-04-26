@@ -8,20 +8,15 @@
     },
     "settings": {
         "terminal.integrated.shell.linux": "/bin/bash",
-        "python.defaultInterpreterPath":"/user/local/bin/python"
+        "python.defaultInterpreterPath":"/usr/local/bin/python"
     },
     "extensions": ["ms-python.python"],
     "forwardPorts": [8080],
     "mounts": ["source=C:/Users/Modius/Documents/development/mobot/repo,target=/mnt/host/source/mobot,type=bind",
-               "source=C:/Users/Modius/Documents/development/mobot/repo/data,target=/mnt/host/data,type=bind"],
-
+               "source=C:/Users/Modius/Documents/development/mobot/data,target=/mnt/host/data,type=bind"],
     "containerEnv": {
         "SOURCE_PATH":"/mnt/host/source/mobot",
         "DATA_PATH": "/mnt/host/data",
         "PYTHONPATH": "/mnt/host/source/mobot"
     }
-
-
-
-
 }
