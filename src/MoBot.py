@@ -18,6 +18,7 @@ handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w'
 handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
 logger.addHandler(handler)
 
+
 BOT_PREFIX = ("?", "!")
 
 client = Bot(command_prefix=BOT_PREFIX)
@@ -65,14 +66,14 @@ async def leave(ctx):
 @client.command(pass_content=True, name='play', brief='play sample audio file')
 async def play(ctx):
   voice = get(client.voice_clients, guild=ctx.guild)
-  voice.play(discord.FFmpegPCMAudio("../../data/sound/test.mp3"))
+  voice.play(discord.FFmpegPCMAudio(cfg.PATH + "sound/test.mp3"))
   voice.source = discord.PCMVolumeTransformer(voice.source)
   voice.source.volume = 0.07
 
 @client.command(pass_content=True, name='kackwaffe', brief='play sample audio file')
 async def kackwaffe(ctx):
   voice = get(client.voice_clients, guild=ctx.guild)
-  voice.play(discord.FFmpegPCMAudio("../../data/sound/kackwaffe.mp3"))
+  voice.play(discord.FFmpegPCMAudio(cfg.PATH + "sound/kackwaffe.mp3"))
   voice.source = discord.PCMVolumeTransformer(voice.source)
   voice.source.volume = 0.7
 
@@ -85,6 +86,17 @@ async def d6(ctx):
   ctx : context
   """
   await ctx.send(random.randint(1, 6))
+
+@client.command(name='d8', brief="rolls a 8-sided dice")
+async def d8(ctx):
+  """ role a 8-sided dice
+
+  Parameters
+  ----------
+  ctx : context
+  """
+  await ctx.send(random.randint(1, 8))
+
 
 
 @client.command(name='d10', brief="rolls a 10-sided dice")
@@ -175,104 +187,31 @@ async def notice(ctx, text):
   user = ctx.author
   write_history(user.name + ': ' + str(text))
 
-
 @client.command(name='thanks',brief='test it =)')
 async def thanks(ctx):
-  response = [
-    'Immer gerne du geiler Hengst',
-    'Hatte gerade eh nichts zu tun.',
-    'Jaja, bla bla!',
-    'Weil du stinkst. ',
-    'Es sind nur noch 2 Wünsche, großer Meister. Wähle Weise.',
-    'Deine Seele gehört jetzt Patric!',
-    'Weil du ein Noob bist',
-    'Sag es ruhig:  ich bin besser als Alexa!',
-    'Vielleicht solltest du mal sinnvolle Werte steigern. ',
-    '+ 50 auf Klugheit kostet extra',
-    'Bedank dich später richtig. ',
-    '# DankeMerkel',
-    'Mülli ist mein sexy Ghostwriter',
-    'Ich kann nicht anders: Ich bin Philanthrop. ',
-    'Mit der Leistung verdienst du einen eigenen Postillon-Artikel. ',
-    'Du hattest kurz Angst, oder? Riecht man.',
-    'Ich hab das mal kurz klargemacht! Für Mich war das ja einfach. ',
-    'Lächerlich! Einfach nur lächerlich.',
-    'Auf die Knie du Wurm und verehre mich!',
-    'Tja, auch ich habe meine Momente. ',
-    'Nur Gauland würfelt noch schlechter als du. ',
-    'Kein Ding. Frag den Meister, wie er das Wort „Wursten“ findet. ',
-    'Yo Diggi! Schör, war easy!',
-    'Weil du ein Lauch bist. Und ich Hack. Gehaltvoller. ',
-    'Ja, auch der Teufel braucht mal Hilfe. ',
-    'Das war sogar für dich erbärmlich. ',
-    'Ich bin Gummi, du bist Stahl. ',
-    'Die Waffe der Wahl: Patrics Penis in Packers Hand',
-    'Du kämpfst wie ein Dummer Bauer. ',
-    'Zervixschleim und du haben viele Gemeinsamkeiten. ',
-    'Man merkt, dass du in deiner Freizeit House Flipper spielst. ',
-    'Ich geh mich jetzt betrinken. Das Trauerspiel schaue ich mir nicht an.',
-    'Im Übrigen bin ich der Meinung, dass Kathargo zerstört werden muss. ',
-    'Liebesperlen, Liebesperlen! ',
-    'Wenn die Situation nicht so traurig wäre, würde ich jetzt lachen. ',
-    'Ich glaub, ich muss mich Übergeben. ',
-    'Inkompetenz. Reine Inkompetenz. ',
-    'Mach lieber mal ne Pause, du scheinst schon von Anfang an überfordert zu sein. ',
-    'Was glaubst du, wer ich bin? Die Putzfee?',
-    'Gut, dass du mit Sarkasmus umgehen kann. Deine Gefühle sind mir nämlich nicht egal.',
-    'Wegen dir wird die Matrix gleich abgeschaltet.',
-
-  ]
+  thx_file = cfg.PATH + "files/thanks.txt"
+  with open(thx_file) as f:
+      response = [line.rstrip() for line in f]
   await ctx.send(random.choice(response))
+
+@client.command(name='whisky_aroma',brief='Whiksy Aroma =)')
+async def whisky_aroma(ctx):
+  thx_file = cfg.PATH + "files/aroma.txt"
+  with open(thx_file) as f:
+      response = [line.rstrip() for line in f]
+  t1 = random.choice(response)
+  t2 = random.choice(response)
+  t3 = random.choice(response)
+
+  await ctx.send(t1 + ', ' + t2 + ' und ' + t3)
+
 
 @client.command(name='thanks_voice',brief='test it =)')
 async def thanks_voice(ctx):
-  response = [
-    'Immer gerne du geiler Hengst',
-    'Hatte gerade eh nichts zu tun.',
-    'Jaja, bla bla!',
-    'Weil du stinkst. ',
-    'Es sind nur noch 2 Wünsche, großer Meister. Wähle Weise.',
-    'Deine Seele gehört jetzt Patric!',
-    'Weil du ein Noob bist',
-    'Sag es ruhig:  ich bin besser als Alexa!',
-    'Vielleicht solltest du mal sinnvolle Werte steigern. ',
-    '+ 50 auf Klugheit kostet extra',
-    'Bedank dich später richtig. ',
-    '# DankeMerkel',
-    'Mülli ist mein sexy Ghostwriter',
-    'Ich kann nicht anders: Ich bin Philanthrop. ',
-    'Mit der Leistung verdienst du einen eigenen Postillon-Artikel. ',
-    'Du hattest kurz Angst, oder? Riecht man.',
-    'Ich hab das mal kurz klargemacht! Für Mich war das ja einfach. ',
-    'Lächerlich! Einfach nur lächerlich.',
-    'Auf die Knie du Wurm und verehre mich!',
-    'Tja, auch ich habe meine Momente. ',
-    'Nur Gauland würfelt noch schlechter als du. ',
-    'Kein Ding. Frag den Meister, wie er das Wort „Wursten“ findet. ',
-    'Yo Diggi! Schör, war easy!',
-    'Weil du ein Lauch bist. Und ich Hack. Gehaltvoller. ',
-    'Ja, auch der Teufel braucht mal Hilfe. ',
-    'Das war sogar für dich erbärmlich. ',
-    'Ich bin Gummi, du bist Stahl. ',
-    'Die Waffe der Wahl: Patrics Penis in Packers Hand',
-    'Du kämpfst wie ein Dummer Bauer. ',
-    'Zervixschleim und du haben viele Gemeinsamkeiten. ',
-    'Man merkt, dass du in deiner Freizeit House Flipper spielst. ',
-    'Ich geh mich jetzt betrinken. Das Trauerspiel schaue ich mir nicht an.',
-    'Im Übrigen bin ich der Meinung, dass Kathargo zerstört werden muss. ',
-    'Liebesperlen, Liebesperlen! ',
-    'Wenn die Situation nicht so traurig wäre, würde ich jetzt lachen. ',
-    'Ich glaub, ich muss mich Übergeben. ',
-    'Inkompetenz. Reine Inkompetenz. ',
-    'Mach lieber mal ne Pause, du scheinst schon von Anfang an überfordert zu sein. ',
-    'Was glaubst du, wer ich bin? Die Putzfee?',
-    'Gut, dass du mit Sarkasmus umgehen kann. Deine Gefühle sind mir nämlich nicht egal.',
-    'Wegen dir wird die Matrix gleich abgeschaltet.',
-
-  ]
+  thx_file = cfg.PATH + "files/thanks.txt"
+  with open(thx_file) as f:
+      response = [line.rstrip() for line in f]
   await ctx.send(random.choice(response),tts=True)
-
-
 
 @client.command(name='cypher', brief="get a cypher.", pass_context=True)
 async def cypher(ctx):
@@ -284,103 +223,9 @@ async def cypher(ctx):
 
   """
   user = ctx.author
-
-  possible_responses = ['Abeyance trap',
-    'Age taker',
-    'Analeptic',
-    'Antidote',
-    'Armor reinforcer',
-    'Attractor',
-    'Blackout',
-    'Condition remover',
-    'Contextualizer',
-    'Contingent activator',
-    'Curative',
-    'Curse bringer',
-    'Darksight',
-    'Death module',
-    'Disguise module',
-    'Draining capacitor',
-    'Effect resistance',
-    'Effort enhancer',
-    'Effort enhancer (combat)',
-    'Enduring shield',
-    'Equipment cache',
-    'Flashburst',
-    'Focus hook',
-    'Force armor projector',
-    'Force screen projector',
-    'Gas ammunition',
-    'Glue',
-    'Grenade',
-    'Grenade (creature)',
-    'Grenade (gravity inversion)',
-    'Grenade (recursion)',
-    'Grenade (recursion collapsing)',
-    'Information lenses',
-    'Insight',
-    'Intellect booster',
-    'Intelligence enhancement',
-    'Knowledge enhancement',
-    'Lift',
-    'Magnetic master',
-    'Manipulation beam',
-    'Mapper',
-    'Matter translation ray',
-    '48 Meditation aid',
-    'Melt all',
-    'Memory switch',
-    'Mental scrambler',
-    'Mind meld',
-    'Mind-restricting wall',
-    'Mind stabilizer',
-    'Monoblade',
-    'Monohorn',
-    'Multiphasic module',
-    'Null field',
-    'Nullification ray',
-    'Nutrition and hydration',
-    'Phase changer',
-    'Phase wall',
-    'Radiation spike',
-    'Ray emitter',
-    'Ray emitter (command)',
-    'Ray emitter (friend slaying)',
-    'Ray emitter (fear)',
-    'Ray emitter (mind-disrupting)',
-    'Recursion anchor',
-    'Recursion code',
-    'Reflex enhancer',
-    'Remembering',
-    'Repeating module',
-    'Sheltering recursion',
-    'Slave maker',
-    'Sleep inducer',
-    'Sniper module',
-    'Speed boost',
-    'Spying grenade',
-    'Stasis keeper',
-    'Stim',
-    'Strange ammunition',
-    'Strange apotheosis',
-    'Strength boost',
-    'Strength enhancer',
-    'Surveillance set',
-    'Telepathic bond',
-    'Temporary shield',
-    'Tissue regeneration',
-    'Tracker',
-    'Translation remedy',
-    'Transvolution',
-    'Trick embedder',
-    'Uninterruptible power source',
-    'Vanisher',
-    'Visual displacement device',
-    'Vocal translator',
-    'Water adapter',
-    'Wings',
-
-  ]
+  cypher_file = cfg.PATH + "files/cypher.txt"
+  with open(cypher_file) as f:
+      possible_responses = [line.rstrip() for line in f]
   result = random.choice(possible_responses)
   write_history(user.name + ': Cypher -> ' + str(result))
 
@@ -409,12 +254,6 @@ async def list_servers():
 def write_history(text):
   with open('history.txt', 'a') as the_file:
     the_file.write(text +'\n')
-
-
-
-
-
-
 
 if __name__ == "__main__":
   client.loop.create_task(list_servers())
