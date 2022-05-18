@@ -1,0 +1,31 @@
+[tool.black]
+line-length = 120
+exclude = """
+  ^/(
+    heraeus/splunk/http_event_collector.py  # external source
+    | heraeus/webapps/reverse_proxy_fix.py  # copied from external
+    | heraeus/vi/labels/  # requires further PR
+  )
+"""
+
+[tool.isort]
+line_length = 120
+profile = "black"
+
+[tool.pylint.MASTER]
+py-version=3.7
+
+[tool.pylint.FORMAT]
+max-line-length=120
+
+[tool.pylint.'MESSAGES CONTROL']
+disable="""
+    duplicate-code,
+    not-context-manager,
+"""
+
+[tool.coverage.run]
+omit = [
+  "tests/*",
+  "setup.py"
+]
