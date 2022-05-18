@@ -13,8 +13,8 @@ def write_history(text):
 
 
 class Pen_And_Paper(commands.Cog, name="Pen and Paper"):
-    def __init__(self):
-        pass
+    def __init__(self, bot):
+        self.bot = bot
 
     @commands.command(name="strange", brief="!strange <difficulty>")
     async def strange(self, ctx, number, option=0):
