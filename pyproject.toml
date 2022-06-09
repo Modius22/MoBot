@@ -1,11 +1,6 @@
 [tool.black]
 line-length = 120
 exclude = """
-  ^/(
-    heraeus/splunk/http_event_collector.py  # external source
-    | heraeus/webapps/reverse_proxy_fix.py  # copied from external
-    | heraeus/vi/labels/  # requires further PR
-  )
 """
 
 [tool.isort]
